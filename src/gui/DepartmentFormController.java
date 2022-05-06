@@ -1,6 +1,7 @@
 package gui;
 
 import db.DbException;
+import gui.listeners.DataChanceListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -15,12 +16,15 @@ import model.entities.Department;
 import model.services.DepartmentService;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DepartmentFormController implements Initializable {
 
     private Department entity;
     private DepartmentService service;
+    private List<DataChanceListener> dataChanceListeners = new ArrayList<>();
 
     @FXML
     private TextField txtId;
@@ -45,6 +49,10 @@ public class DepartmentFormController implements Initializable {
         this.service = service;
     }
 
+    public void subscribeDataChangeListener(DataChanceListener listener) {
+        dataChanceListeners.add(listener);
+    }
+
     @FXML
     public void onBtSaveAction(ActionEvent event) {
         if (entity == null) {
@@ -57,8 +65,15 @@ public class DepartmentFormController implements Initializable {
             entity = getFormData();
             service.saveOrUpdate(entity);
             Utils.currentStage(event).close();
+            notifyDataChangeListeners();
         } catch (DbException e) {
             Alerts.showAlert("Error saving object", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void notifyDataChangeListeners() {
+        for (DataChanceListener listener : dataChanceListeners) {
+            listener.onDataChanged();
         }
     }
 

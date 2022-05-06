@@ -1,6 +1,7 @@
 package gui;
 
 import application.Main;
+import gui.listeners.DataChanceListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -20,13 +21,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Department;
 import model.services.DepartmentService;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DepartmentListController implements Initializable {
+public class DepartmentListController implements Initializable, DataChanceListener{
 
     private DepartmentService service;
 
@@ -87,6 +87,7 @@ public class DepartmentListController implements Initializable {
             controller.setDepartment(obj);
             controller.setDepartmentService(new DepartmentService());
             controller.updateFormData();
+            controller.subscribeDataChangeListener(this);
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Enter Department data");
@@ -99,5 +100,10 @@ public class DepartmentListController implements Initializable {
         } catch (IOException e) {
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+        updateTableView();
     }
 }
