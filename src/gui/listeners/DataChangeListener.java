@@ -1,5 +1,5 @@
 package gui.listeners;
 
-public interface DataChanceListener {
+public interface DataChangeListener {
     void onDataChanged();
 }

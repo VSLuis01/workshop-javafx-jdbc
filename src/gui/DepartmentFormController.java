@@ -1,7 +1,7 @@
 package gui;
 
 import db.DbException;
-import gui.listeners.DataChanceListener;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -23,7 +23,7 @@ public class DepartmentFormController implements Initializable {
 
     private Department entity;
     private DepartmentService service;
-    private List<DataChanceListener> dataChanceListeners = new ArrayList<>();
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     @FXML
     private TextField txtId;
@@ -48,8 +48,8 @@ public class DepartmentFormController implements Initializable {
         this.service = service;
     }
 
-    public void subscribeDataChangeListener(DataChanceListener listener) {
-        dataChanceListeners.add(listener);
+    public void subscribeDataChangeListener(DataChangeListener listener) {
+        dataChangeListeners.add(listener);
     }
 
     @FXML
@@ -73,7 +73,7 @@ public class DepartmentFormController implements Initializable {
     }
 
     private void notifyDataChangeListeners() {
-        for (DataChanceListener listener : dataChanceListeners) {
+        for (DataChangeListener listener : dataChangeListeners) {
             listener.onDataChanged();
         }
     }

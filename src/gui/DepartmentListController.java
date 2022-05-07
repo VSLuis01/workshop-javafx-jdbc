@@ -2,7 +2,7 @@ package gui;
 
 import application.Main;
 import db.DbIntegrityException;
-import gui.listeners.DataChanceListener;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class DepartmentListController implements Initializable, DataChanceListener {
+public class DepartmentListController implements Initializable, DataChangeListener {
 
     private DepartmentService service;
 
